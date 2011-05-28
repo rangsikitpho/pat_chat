@@ -1,12 +1,12 @@
 get '/': -> 
-  @name = cookies['name']
+  @name = cookies['name'] || ''
   @names = all_names()
   @said_history = app.said_history || ''
   @coded_history = app.coded_history || ''
-  if @name
-    render 'index'
-  else
-    redirect '/login'
+#  if @name
+  render 'index'
+#  else
+#    redirect '/login'
 
 post '/login': -> 
   puts "Setting name cookie to " + params.name
@@ -98,12 +98,12 @@ client index: ->
 
 
     $('#chat_form').submit ->
-      socket.send JSON.stringify said: {text: $('#chat_box').val(), name: $('#name').val()}
+      socket.send JSON.stringify said: {text: $('#chat_box').val(), name: $('#chat_form #name').val()}
       $('#chat_box').val('').focus()
       false
 
     $('#code_form').submit ->
-      socket.send JSON.stringify coded: {text: $('#code_box').val(), name: $('#name').val()}
+      socket.send JSON.stringify coded: {text: $('#code_box').val(), name: $('#code_form #name').val()}
       $('#code_box').val('').focus()
       false
 
@@ -114,14 +114,27 @@ client index: ->
     $("#code").attr({ scrollTop: $("#code").attr("scrollHeight") }) # Automaticall scroll to end of div
     prettyPrint()
 
-    socket.send JSON.stringify logged_in: { name: $('#name').val() }
-    $('#chat_box').focus()
+    # Popup login window
+    if $('#chat_form #name').val() == ''
+      $("#login").dialog {
+        modal: true
+        title: "Please Login"
+        closeOnEscape: false
+        open: (event, ui) -> $(".ui-dialog-titlebar-close").hide()
+        height: 120
+      }
+      $('#login #name').focus()
+
+    else
+      socket.send JSON.stringify logged_in: { name: $('#chat_form #name').val() }
+      $('#chat_box').focus()
 
 view index: ->
   @title = 'PATchat'
-  @scripts = ['http://code.jquery.com/jquery-1.4.3.min', '/socket.io/socket.io', '/index', '/javascripts/shCore', '/javascripts/prettify']
+  @scripts = ['/javascripts/jquery-1.5.1.min', '/socket.io/socket.io', '/index', '/javascripts/shCore', '/javascripts/prettify', '/javascripts/jquery-ui-1.8.13.custom.min']
   link rel: 'stylesheet', href: '/stylesheets/prettify.css'
   link rel: 'stylesheet', href: '/stylesheets/style.css'
+  link rel: 'stylesheet', href: '/stylesheets/ui-darkness/jquery-ui-1.8.13.custom.css'
 
   div id: 'title', ->
     h1 ->
@@ -134,6 +147,11 @@ view index: ->
   div id: 'chat', "#{@said_history}"
 
   div id: 'code', "#{@coded_history}"
+
+  div id: 'login', ->
+    form method: 'post', action: '/login', ->
+      input id: 'name', name: 'name'
+      button id: 'login', -> 'Login'
   
   div id: 'toolbar', ->
     form id: 'chat_form', ->

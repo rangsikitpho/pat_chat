@@ -68,6 +68,10 @@ a:hover { text-decoration: underline; color: #aaa; }
   padding: 5px;
 }
 
+.ui-icon-closethick {
+    display: none;
+}
+
 #chatters {
   position: absolute;
   top: 5px;
