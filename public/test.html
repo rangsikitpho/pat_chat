@@ -1,16 +1,26 @@
 <!DOCTYPE html><html><head><title>PATchat</title><script src="http://code.jquery.com/jquery-1.4.3.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/index.js"></script><script src="/javascripts/shCore.js"></script>
-    <script src="/javascripts/shBrushJScript.js"></script></head><body>
-    <link rel="stylesheet" href="/stylesheets/shCore.css" />
-    <link href="stylesheets/shThemeDefault.css" rel="stylesheet" type="text/css" />
-    <h1>PATchat: Baker</h1><a href="/logout">Logout</a><div id="log"></div>
-    
-    <script type="syntaxhighlighter" class="brush: js"><![CDATA[      
-      /**       
-      * SyntaxHighlighter       
-      */  
-      function foo()  {      if (counter <= 10)          return;      
-        // it works!  }]]></script>
+<link href="/stylesheets/prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="/javascripts/prettify.js"></script>
+<body onload="prettyPrint();">
+<pre class="prettyprint">
+class User < ActiveRecord::Base
+  acts_as_authentic
+  acts_as_authorization_subject
+  
+  has_and_belongs_to_many :roles
+  has_many :audits
+  
+  def campaigns; Campaign.all(:conditions => ['id in (?)', roles.map{|r| r.authorizable_id if r.authorizable_type == 'Campaign'}.compact]); end
+  def partners; Partner.all(:conditions => ['id in (?)', roles.map{|r| r.authorizable_id if r.authorizable_type == 'Partner'}.compact]); end
+  def partner_configs; PartnerConfig.all(:conditions => ['id in (?)', roles.map{|r| r.authorizable_id if r.authorizable_type == 'PartnerConfig'}.compact]); end
+  def accessible_partner_configs
+    if has_role?(:admin)
+      PartnerConfig.all
+    else
+
+</pre>
+
+
       <div id="toolbar"><form><input id="box" /><input id="name" type="hidden" value="Baker" /><button id="say">Say</button></form></div></body></html>
 
+</body>
