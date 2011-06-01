@@ -1,1 +1,1 @@
-pat_chat: node pat_chat.js
+web: zappa pat_chat.coffee
