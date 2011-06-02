@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "zappa": "0.1.4"
-  }
+  },
+  "engine": "node 0.4.7"
 }
 
