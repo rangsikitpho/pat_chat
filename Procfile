@@ -1,1 +1,1 @@
-web: zappa pat_chat.coffee
+web: zappa -p 80 pat_chat.coffee
