@@ -3,10 +3,7 @@ get '/': ->
   @names = all_names()
   @said_history = app.said_history || ''
   @coded_history = app.coded_history || ''
-#  if @name
   render 'index'
-#  else
-#    redirect '/login'
 
 post '/login': -> 
   puts "Setting name cookie to " + params.name
@@ -55,7 +52,6 @@ msg logged_in: ->
   track_name(id,@name)
   names = all_names()
   puts "All names = #{names}"
-  #send 'logged_in', id: id, name: @name
   broadcast 'logged_in', id: id, name: @name
   send 'chatters_changed', id: id, names: names
   broadcast 'chatters_changed', id: id, names: names
