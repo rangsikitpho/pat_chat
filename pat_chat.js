@@ -4,6 +4,7 @@ require('zappa').run(function(){get({
     this.names = all_names();
     this.said_history = app.said_history || '';
     this.coded_history = app.coded_history || '';
+    this.port = 80;
     return render('index');
   }
 });
@@ -370,4 +371,4 @@ view({
       });
     });
   }
-});});
+});}, { 'port': '80' });
