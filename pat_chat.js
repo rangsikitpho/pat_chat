@@ -1,3 +1,5 @@
+var port = process.env.PORT || 3000;
+
 require('zappa').run(function(){get({
   '/': function() {
     this.name = cookies['name'] || '';
@@ -371,4 +373,4 @@ view({
       });
     });
   }
-});}, { 'port': ['80'] });
+});}, { 'port': [port] });
